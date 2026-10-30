@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Learn everyday Swedish phrases with real Swedish audio, word meanings and flashcards.">
+<meta name="theme-color" content="#0B5FA5">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lagom">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px system-ui,sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Lagom Phrasebook</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a translator desk up top, then a tabbed workbench (phrases / practice / sounds) in one centred column */
+:root {
+  --bg: #EDF1F4;
+  --surface: #FFFFFF;
+  --surface-2: #E3E9EE;
+  --ink: #10233A;
+  --muted: #56687B;
+  --line: #D3DCE4;
+  --accent: #0B5FA5;
+  --accent-ink: #FFFFFF;
+  --sun: #F2C230;
+  --sun-ink: #2A2100;
+  --good: #1E7A4C;
+  --warn: #9A5B00;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C1622; --surface: #142233; --surface-2: #1B2C40; --ink: #E6EDF3; --muted: #93A4B5;
+    --line: #26394E; --accent: #6DB3F2; --accent-ink: #06182A; --sun: #F2C230; --sun-ink: #2A2100;
+    --good: #5FD39A; --warn: #F0B45A; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C1622; --surface: #142233; --surface-2: #1B2C40; --ink: #E6EDF3; --muted: #93A4B5;
+  --line: #26394E; --accent: #6DB3F2; --accent-ink: #06182A; --sun: #F2C230; --sun-ink: #2A2100;
+  --good: #5FD39A; --warn: #F0B45A; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.5;
+}
+.wrap {
+  max-width: 1040px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 120px;
+  display: flex; flex-direction: column; gap: 28px;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.1; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+
+/* Header */
+.brand { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.brand h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 800; letter-spacing: -0.02em; }
+.brand h1 span { color: var(--accent); }
+.brand p { margin: 6px 0 0; color: var(--muted); max-width: 52ch; }
+.lagom-def { font-size: 0.9rem; color: var(--muted); border-left: 3px solid var(--sun); padding-left: 12px; max-width: 34ch; }
+.lagom-def b { color: var(--ink); font-family: var(--font-display); }
+
+/* Translator */
+.desk { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.desk-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.desk-head h2 { font-size: 1.35rem; }
+.dir { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.dir button { border: 0; background: transparent; padding: 6px 14px; font-weight: 600; font-size: 0.95rem; color: var(--muted); }
+.dir button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.ask { display: flex; gap: 10px; flex-wrap: wrap; }
+.ask input { flex: 1 1 260px; min-width: 0; font: inherit; font-size: 1.15rem; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg); color: var(--ink); }
+.btn { border: 1px solid transparent; border-radius: var(--r); padding: 10px 18px; font-weight: 700; background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn:disabled { opacity: 0.55; cursor: progress; }
+.examples { display: flex; gap: 8px; flex-wrap: wrap; font-size: 0.92rem; color: var(--muted); align-items: center; }
+.examples button { border: 1px dashed var(--line); background: transparent; border-radius: 999px; padding: 3px 10px; color: var(--ink); }
+.result { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.result .src { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 700; }
+.result .main { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.result .tr { font-family: var(--font-display); font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 700; overflow-wrap: anywhere; }
+.result .say { font-family: var(--font-mono); color: var(--muted); font-size: 0.95rem; }
+.result .note { color: var(--muted); font-size: 0.95rem; max-width: 65ch; }
+.breakdown { display: flex; flex-wrap: wrap; gap: 8px; }
+.breakdown span { background: var(--surface-2); border-radius: 8px; padding: 4px 10px; font-size: 0.95rem; }
+.breakdown b { font-weight: 700; }
+.err { color: var(--warn); }
+
+/* Speaker buttons */
+.spk { display: inline-flex; gap: 6px; }
+.spk button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; padding: 0; }
+.spk button:hover { border-color: var(--accent); color: var(--accent); }
+.spk button.slow { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; }
+.spk svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* Tabs */
+.tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--line); overflow-x: auto; }
+.tabs button { border: 0; background: transparent; padding: 10px 16px; font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--sun); }
+.panel { display: flex; flex-direction: column; gap: 18px; }
+
+/* Phrase toolbar */
+.toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.cats { display: flex; gap: 8px; flex-wrap: wrap; flex: 1 1 400px; }
+.cats button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 13px; font-weight: 600; font-size: 0.95rem; }
+.cats button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.cats small { font-family: var(--font-mono); opacity: 0.7; margin-left: 4px; font-size: 0.75rem; }
+.filter { flex: 0 1 240px; min-width: 0; font: inherit; padding: 8px 12px; border-radius: var(--r); border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: start; min-width: 0; }
+.card .sv { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; line-height: 1.25; overflow-wrap: anywhere; }
+.card .en { grid-column: 1; color: var(--ink); }
+.card .say { grid-column: 1; font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); }
+.card .spk { grid-row: 1 / span 3; grid-column: 2; }
+.card .known { grid-column: 1 / -1; font-size: 0.78rem; color: var(--good); font-weight: 700; }
+.w { cursor: pointer; border-bottom: 1px dotted var(--muted); }
+.w:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.hint { color: var(--muted); font-size: 0.92rem; margin: 0; }
+.empty { color: var(--muted); padding: 24px 0; }
+
+/* Practice */
+.flash { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 28px 20px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; max-width: 620px; width: 100%; margin: 0 auto; }
+.flash .meta { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 700; }
+.flash .sv { font-family: var(--font-display); font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 800; overflow-wrap: anywhere; }
+.flash .back { display: flex; flex-direction: column; gap: 4px; }
+.flash .en { font-size: 1.25rem; font-weight: 600; }
+.flash .say { font-family: var(--font-mono); color: var(--muted); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.btn.good { background: var(--good); color: var(--surface); }
+.progress { width: 100%; max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; gap: 6px; font-size: 0.9rem; color: var(--muted); }
+.bar { height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--sun); width: 0; transition: width .3s; }
+.practice-opts { display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap; font-size: 0.95rem; }
+.practice-opts select { font: inherit; padding: 6px 10px; border-radius: var(--r); border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+
+/* Sounds */
+.sounds { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.sound { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+.sound .letter { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--accent); line-height: 1; }
+.sound p { margin: 0; }
+.sound .ex { display: flex; gap: 8px; flex-wrap: wrap; }
+.sound .ex button { border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 4px 10px; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; }
+.sound .ex button em { font-style: normal; font-weight: 400; color: var(--muted); font-size: 0.85rem; }
+
+/* Voice note + word bar */
+.voice-note { font-size: 0.9rem; padding: 10px 14px; border-radius: var(--r); background: var(--surface-2); color: var(--ink); }
+.voice-note b { color: var(--warn); }
+.wordbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: var(--ink); color: var(--bg);
+  display: flex; justify-content: center;
+}
+.wordbar-in { max-width: 1040px; width: 100%; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.wordbar .wb-sv { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; }
+.wordbar .wb-en { flex: 1 1 200px; min-width: 0; }
+.wordbar .spk button { background: transparent; border-color: color-mix(in srgb, var(--bg) 40%, transparent); color: var(--bg); }
+.wordbar .x { background: transparent; border: 0; color: var(--bg); font-size: 1.4rem; padding: 4px 8px; }
+.wordbar .askc { background: var(--sun); color: var(--sun-ink); border: 0; border-radius: 8px; padding: 6px 12px; font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="brand">
+    <div>
+      <h1>Lagom <span>Phrasebook</span></h1>
+      <p>Everyday Swedish for English speakers. Tap the speaker to hear any phrase, tap a word to see what it means, or ask for any translation.</p>
+    </div>
+    <div class="lagom-def"><b>lagom</b> <span style="font-family:var(--font-mono)">/LAH-gom/</span>: not too much, not too little. Just the right amount, which is how this phrasebook works.</div>
+  </header>
+
+  <div id="install" class="voice-note" hidden>
+    <span id="install-text"></span>
+    <button class="btn" id="install-btn" type="button" hidden style="margin-left:8px;padding:6px 14px">Install app</button>
+    <button class="btn ghost" id="install-x" type="button" style="margin-left:4px;padding:6px 12px">Not now</button>
+  </div>
+
+
+  <section class="desk" aria-labelledby="t-head">
+    <div class="desk-head">
+      <h2 id="t-head">Translate</h2>
+      <div class="dir" role="group" aria-label="Translation direction">
+        <button id="dir-sv" aria-pressed="true" type="button">Swedish → English</button>
+        <button id="dir-en" aria-pressed="false" type="button">English → Swedish</button>
+      </div>
+    </div>
+    <form class="ask" id="ask-form">
+      <input id="ask-input" aria-label="Text to translate" autocomplete="off" placeholder="Type a Swedish word or sentence, e.g. smörgås" value="Hur mår du?">
+      <button class="btn" id="ask-btn" type="submit">Translate</button>
+    </form>
+    <div class="examples" id="examples"><span>Try:</span></div>
+    <div class="result" id="result"></div>
+  </section>
+
+  <div id="voice-note" class="voice-note" hidden></div>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-phrases" aria-selected="true" aria-controls="p-phrases" type="button">Phrases</button>
+    <button role="tab" id="tab-practice" aria-selected="false" aria-controls="p-practice" type="button">Practice</button>
+    <button role="tab" id="tab-sounds" aria-selected="false" aria-controls="p-sounds" type="button">Swedish sounds</button>
+  </nav>
+
+  <section class="panel" id="p-phrases" role="tabpanel" aria-labelledby="tab-phrases">
+    <div class="toolbar">
+      <div class="cats" id="cats"></div>
+      <input class="filter" id="filter" type="search" placeholder="Search phrases" aria-label="Search phrases">
+    </div>
+    <p class="hint">The <b>slow</b> button replays at reduced speed. Dotted words can be tapped one by one.</p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="panel" id="p-practice" role="tabpanel" aria-labelledby="tab-practice" hidden>
+    <div class="practice-opts">
+      <label for="deck-sel">Deck</label>
+      <select id="deck-sel"></select>
+      <button class="btn ghost" id="reset-known" type="button">Reset progress</button>
+    </div>
+    <div class="progress"><span id="prog-label"></span><div class="bar"><i id="prog-bar"></i></div></div>
+    <div class="flash" id="flash"></div>
+  </section>
+
+  <section class="panel" id="p-sounds" role="tabpanel" aria-labelledby="tab-sounds" hidden>
+    <p class="hint">Swedish spelling is mostly regular once you know these rules. Tap an example to hear it.</p>
+    <div class="sounds" id="sounds"></div>
+  </section>
+</div>
+
+<div class="wordbar" id="wordbar" hidden>
+  <div class="wordbar-in">
+    <span class="wb-sv" id="wb-sv"></span>
+    <span class="wb-en" id="wb-en"></span>
+    <span class="spk" id="wb-spk"></span>
+    <button class="x" id="wb-close" type="button" aria-label="Close word">×</button>
+  </div>
+</div>
+
+<script>
+const CATS = [
+  { id: "greet", name: "Greetings", items: [
+    ["Hej", "Hi / Hello", "hay"],
+    ["Hej då", "Goodbye", "hay doh"],
+    ["God morgon", "Good morning", "goo MOR-on"],
+    ["God kväll", "Good evening", "goo kvell"],
+    ["God natt", "Good night", "goo nat"],
+    ["Hur mår du?", "How are you?", "hoor mohr doo"],
+    ["Jag mår bra, tack.", "I'm fine, thanks.", "yah mohr brah, tack"],
+    ["Vad heter du?", "What's your name?", "vahd HEH-ter doo"],
+    ["Jag heter Anna.", "My name is Anna.", "yah HEH-ter AN-na"],
+    ["Trevligt att träffas.", "Nice to meet you.", "TREHV-lit at TREF-fas"],
+    ["Välkommen!", "Welcome!", "VEHL-kom-men"],
+    ["Vi ses!", "See you!", "vee sehs"],
+  ]},
+  { id: "basics", name: "Basics", items: [
+    ["Ja", "Yes", "yah"],
+    ["Nej", "No", "nay"],
+    ["Tack", "Thank you", "tack"],
+    ["Tack så mycket!", "Thank you very much!", "tack soh MYK-keh"],
+    ["Varsågod", "You're welcome / Here you go", "VAR-sho-good"],
+    ["Ursäkta", "Excuse me", "oor-SHEK-ta"],
+    ["Förlåt", "Sorry", "fur-LOHT"],
+    ["Jag förstår inte.", "I don't understand.", "yah fur-SHTOHR IN-teh"],
+    ["Talar du engelska?", "Do you speak English?", "TAH-lar doo ENG-el-ska"],
+    ["Kan du upprepa?", "Can you repeat that?", "kan doo UP-reh-pa"],
+    ["Långsammare, tack.", "Slower, please.", "LONG-sam-ma-reh, tack"],
+    ["Jag vet inte.", "I don't know.", "yah veht IN-teh"],
+  ]},
+  { id: "numbers", name: "Numbers", items: [
+    ["noll", "zero", "nol"],
+    ["ett", "one", "ett"],
+    ["två", "two", "tvoh"],
+    ["tre", "three", "treh"],
+    ["fyra", "four", "FEE-ra (rounded lips)"],
+    ["fem", "five", "fem"],
+    ["sex", "six", "sex"],
+    ["sju", "seven", "hwoo (soft breathy sh)"],
+    ["åtta", "eight", "OT-ta"],
+    ["nio", "nine", "NEE-oo"],
+    ["tio", "ten", "TEE-oo"],
+    ["tjugo", "twenty", "SHOO-go"],
+    ["hundra", "hundred", "HUN-dra"],
+    ["tusen", "thousand", "TOO-sen"],
+  ]},
+  { id: "food", name: "Food & fika", items: [
+    ["Ska vi fika?", "Shall we have a coffee break?", "ska vee FEE-ka"],
+    ["En kaffe, tack.", "A coffee, please.", "en KAF-feh, tack"],
+    ["Ett glas vatten, tack.", "A glass of water, please.", "ett glahs VAT-ten, tack"],
+    ["En kanelbulle", "A cinnamon bun", "en ka-NEHL-bul-leh"],
+    ["Jag är hungrig.", "I'm hungry.", "yah air HUNG-rig"],
+    ["Jag är vegetarian.", "I'm vegetarian.", "yah air veh-geh-ta-ree-AHN"],
+    ["Det var gott!", "That was tasty!", "deh var got"],
+    ["Smaklig måltid!", "Enjoy your meal!", "SMAHK-lig MOHL-teed"],
+    ["Skål!", "Cheers!", "skohl"],
+    ["Kan jag få notan?", "Can I have the bill?", "kan yah foh NOO-tan"],
+  ]},
+  { id: "travel", name: "Getting around", items: [
+    ["Var är toaletten?", "Where is the toilet?", "var air too-a-LET-ten"],
+    ["Hur kommer jag till stationen?", "How do I get to the station?", "hoor KOM-mer yah til sta-SHOO-nen"],
+    ["Till vänster", "To the left", "til VEN-ster"],
+    ["Till höger", "To the right", "til HUR-ger"],
+    ["Rakt fram", "Straight ahead", "rahkt fram"],
+    ["Det är nära.", "It's close.", "deh air NAIR-a"],
+    ["Det är långt.", "It's far.", "deh air longt"],
+    ["Hur mycket kostar det?", "How much does it cost?", "hoor MYK-keh KOS-tar deh"],
+    ["En biljett till Stockholm, tack.", "A ticket to Stockholm, please.", "en bil-YET til STOK-holm, tack"],
+    ["Hjälp!", "Help!", "yelp"],
+  ]},
+  { id: "time", name: "Days & time", items: [
+    ["idag", "today", "ee-DAHG"],
+    ["imorgon", "tomorrow", "ee-MOR-on"],
+    ["igår", "yesterday", "ee-GOHR"],
+    ["måndag", "Monday", "MON-dag"],
+    ["tisdag", "Tuesday", "TEES-dag"],
+    ["onsdag", "Wednesday", "OONS-dag"],
+    ["torsdag", "Thursday", "TOORS-dag"],
+    ["fredag", "Friday", "FREH-dag"],
+    ["lördag", "Saturday", "LUR-dag"],
+    ["söndag", "Sunday", "SURN-dag"],
+    ["Vad är klockan?", "What time is it?", "vahd air KLOK-kan"],
+  ]},
+  { id: "everyday", name: "Everyday life", items: [
+    ["Ha det bra!", "Take care!", "hah deh brah"],
+    ["Ingen fara.", "No problem.", "ING-en FAH-ra"],
+    ["Precis!", "Exactly!", "preh-SEES"],
+    ["Det är kallt idag.", "It's cold today.", "deh air kalt ee-DAHG"],
+    ["Jag är trött.", "I'm tired.", "yah air trurt"],
+    ["Vad gör du?", "What are you doing?", "vahd yur doo"],
+    ["Jag bor i Sverige.", "I live in Sweden.", "yah boor ee SVAIR-yeh"],
+    ["Jag lär mig svenska.", "I'm learning Swedish.", "yah lair may SVEN-ska"],
+    ["Jag älskar dig.", "I love you.", "yah EL-skar day"],
+    ["Lagom är bäst.", "Just enough is best.", "LAH-gom air best"],
+  ]},
+  { id: "shop", name: "Shopping", items: [
+    ["Jag tittar bara.", "I'm just looking.", "yah TIT-tar BAH-ra"],
+    ["Har ni den här i en annan storlek?", "Do you have this in another size?", "har nee den hair ee en AN-nan STOOR-lehk"],
+    ["Kan jag betala med kort?", "Can I pay by card?", "kan yah beh-TAH-la mehd koort"],
+    ["Jag tar den.", "I'll take it.", "yah tar den"],
+    ["Det är för dyrt.", "It's too expensive.", "deh air fur dyrt"],
+    ["Är det på rea?", "Is it on sale?", "air deh poh REH-a"],
+    ["Behöver du en påse?", "Do you need a bag?", "beh-HUR-ver doo en POH-seh"],
+    ["Kvitto, tack.", "Receipt, please.", "KVIT-to, tack"],
+    ["Var hittar jag mjölk?", "Where can I find milk?", "var HIT-tar yah myurlk"],
+    ["När öppnar ni?", "When do you open?", "nair URP-nar nee"],
+    ["När stänger ni?", "When do you close?", "nair STENG-er nee"],
+  ]},
+  { id: "work", name: "At work", items: [
+    ["Var jobbar du?", "Where do you work?", "var YOB-bar doo"],
+    ["Jag jobbar som lärare.", "I work as a teacher.", "yah YOB-bar som LAIR-a-reh"],
+    ["Vi har ett möte klockan tio.", "We have a meeting at ten.", "vee har ett MUR-teh KLOK-kan TEE-oo"],
+    ["Jag är lite sen.", "I'm a little late.", "yah air LEE-teh sehn"],
+    ["Kan du skicka ett mejl?", "Can you send an email?", "kan doo SHIK-ka ett mayl"],
+    ["Har du tid?", "Do you have time?", "har doo teed"],
+    ["Vi tar en fikapaus.", "Let's take a coffee break.", "vee tar en FEE-ka-pa-oos"],
+    ["Jag är sjuk idag.", "I'm sick today.", "yah air hwook ee-DAHG"],
+    ["Jag har semester.", "I'm on holiday.", "yah har seh-MES-ter"],
+    ["Trevlig helg!", "Have a nice weekend!", "TREHV-lig helly"],
+  ]},
+  { id: "weather", name: "Weather", items: [
+    ["Vad är det för väder idag?", "What's the weather like today?", "vahd air deh fur VEH-der ee-DAHG"],
+    ["Solen skiner.", "The sun is shining.", "SOO-len SHEE-ner"],
+    ["Det regnar.", "It's raining.", "deh RENG-nar"],
+    ["Det snöar.", "It's snowing.", "deh SNUR-ar"],
+    ["Det blåser.", "It's windy.", "deh BLOH-ser"],
+    ["Det är varmt.", "It's warm.", "deh air varmt"],
+    ["Det är molnigt.", "It's cloudy.", "deh air MOL-nit"],
+    ["Ta med ett paraply.", "Bring an umbrella.", "tah mehd ett pa-ra-PLEE"],
+    ["Det finns inget dåligt väder, bara dåliga kläder.", "There's no bad weather, only bad clothes.", "deh fins ING-et DOH-lit VEH-der, BAH-ra DOH-li-ga KLAI-der"],
+  ]},
+  { id: "family", name: "Family", items: [
+    ["mamma", "mum", "MAM-ma"],
+    ["pappa", "dad", "PAP-pa"],
+    ["bror", "brother", "broor"],
+    ["syster", "sister", "SYS-ter"],
+    ["barn", "child / children", "barn"],
+    ["mormor", "grandmother (mother's mother)", "MOOR-moor"],
+    ["farfar", "grandfather (father's father)", "FAR-far"],
+    ["min sambo", "my partner (we live together)", "min SAM-boo"],
+    ["Har du syskon?", "Do you have brothers or sisters?", "har doo SYS-kon"],
+    ["Jag har två barn.", "I have two children.", "yah har tvoh barn"],
+    ["Det här är min familj.", "This is my family.", "deh hair air min fa-MILY"],
+  ]},
+  { id: "help", name: "Emergencies", items: [
+    ["Ring 112!", "Call 112! (the emergency number)", "ring ett ett tvoh"],
+    ["Ring polisen!", "Call the police!", "ring poo-LEE-sen"],
+    ["Brand!", "Fire!", "brand"],
+    ["Jag behöver en läkare.", "I need a doctor.", "yah beh-HUR-ver en LAI-ka-reh"],
+    ["Det gör ont här.", "It hurts here.", "deh yur oont hair"],
+    ["Var ligger sjukhuset?", "Where is the hospital?", "var LIG-ger HWOOK-hoo-set"],
+    ["Var är närmaste apotek?", "Where is the nearest pharmacy?", "var air NAIR-mas-teh a-poo-TEHK"],
+    ["Jag är allergisk mot nötter.", "I'm allergic to nuts.", "yah air a-LAIR-gisk moot NURT-ter"],
+    ["Jag har gått vilse.", "I'm lost.", "yah har got VIL-seh"],
+    ["Jag har tappat min plånbok.", "I've lost my wallet.", "yah har TAP-pat min PLOHN-book"],
+  ]},
+];
+
+// Single-word glossary used for tap-a-word and offline word-by-word fallback
+const WORDS = {
+  hej:"hi, hello", "då":"then (in 'hej då': bye)", god:"good", morgon:"morning", "kväll":"evening", natt:"night",
+  hur:"how", "mår":"feel, am doing", du:"you", jag:"I", bra:"good, well", tack:"thanks, please",
+  vad:"what", heter:"am called, is called", trevligt:"nice", att:"to; that", "träffas":"meet (each other)",
+  "välkommen":"welcome", vi:"we", ses:"see each other", ja:"yes", nej:"no", "så":"so", mycket:"much, very",
+  "varsågod":"you're welcome, here you go", "ursäkta":"excuse me", "förlåt":"sorry", "förstår":"understand",
+  inte:"not", talar:"speak", engelska:"English", kan:"can", upprepa:"repeat", "långsammare":"slower", vet:"know",
+  noll:"zero", en:"a, one (en-word)", ett:"a, one (ett-word)", "två":"two", tre:"three", fyra:"four", fem:"five",
+  sex:"six", sju:"seven", "åtta":"eight", nio:"nine", tio:"ten", tjugo:"twenty", hundra:"hundred", tusen:"thousand",
+  ska:"shall, will", fika:"to have a coffee break", kaffe:"coffee", glas:"glass", vatten:"water",
+  kanelbulle:"cinnamon bun", "är":"am, is, are", hungrig:"hungry", vegetarian:"vegetarian", det:"it, that",
+  var:"was; where", gott:"tasty, good", smaklig:"tasty, appetising", "måltid":"meal", "skål":"cheers; bowl",
+  "få":"get, have, may", notan:"the bill", toaletten:"the toilet", kommer:"come, get", till:"to",
+  stationen:"the station", "vänster":"left", "höger":"right", rakt:"straight", fram:"forward, ahead",
+  "nära":"near, close", "långt":"far", kostar:"costs", biljett:"ticket", stockholm:"Stockholm", "hjälp":"help",
+  idag:"today", imorgon:"tomorrow", "igår":"yesterday", "måndag":"Monday", tisdag:"Tuesday", onsdag:"Wednesday",
+  torsdag:"Thursday", fredag:"Friday", "lördag":"Saturday", "söndag":"Sunday", klockan:"the clock (the time)",
+  ha:"have", ingen:"no, none, nobody", fara:"danger", precis:"exactly", kallt:"cold", "trött":"tired",
+  "gör":"do, does", bor:"live", i:"in", sverige:"Sweden", "lär":"learn, teach", mig:"me, myself",
+  svenska:"Swedish", "älskar":"love", dig:"you (object)", lagom:"just the right amount", "bäst":"best",
+  anna:"Anna (a name)", "smörgås":"open sandwich", "öl":"beer", "fönster":"window", hus:"house", katt:"cat",
+  hund:"dog", "kärlek":"love", "vän":"friend", "snälla":"please (pleading); kind", "sjö":"lake", "kyrka":"church",
+  "göra":"to do", "köpa":"to buy",
+  tittar:"look, am looking", bara:"only, just", har:"have, has", ni:"you (plural or polite)", den:"it, that, the",
+  "här":"here", annan:"other, another", storlek:"size", betala:"pay", med:"with", kort:"card; short", tar:"take",
+  "för":"too; for", dyrt:"expensive", "på":"on, at", rea:"sale", "behöver":"need", "påse":"bag", kvitto:"receipt",
+  hittar:"find", "mjölk":"milk", "när":"when", "öppnar":"open", "stänger":"close", jobbar:"work", som:"as, who, that",
+  "lärare":"teacher", "möte":"meeting", lite:"a little", sen:"late", skicka:"send", mejl:"email", sjuk:"sick, ill",
+  trevlig:"nice, pleasant", helg:"weekend; holiday", fikapaus:"coffee break", tid:"time", semester:"holiday, vacation",
+  "väder":"weather", solen:"the sun", skiner:"shines", regnar:"rains, is raining", "snöar":"snows, is snowing",
+  "blåser":"blows, is windy", varmt:"warm", molnigt:"cloudy", finns:"there is, exists", inget:"no, nothing",
+  "dåligt":"bad", "dåliga":"bad (plural)", "kläder":"clothes", ta:"take, bring", paraply:"umbrella",
+  mamma:"mum", pappa:"dad", bror:"brother", syster:"sister", barn:"child, children",
+  mormor:"grandmother (mother's mother)", farfar:"grandfather (father's father)", sambo:"live-in partner",
+  syskon:"siblings", min:"my", familj:"family", ring:"call", "112":"112, the emergency number",
+  polisen:"the police", brand:"fire", "läkare":"doctor", ont:"pain (gör ont: hurts)", ligger:"lies, is located",
+  sjukhuset:"the hospital", "närmaste":"nearest", apotek:"pharmacy", allergisk:"allergic", mot:"to, against",
+  "nötter":"nuts", "gått":"gone, walked", vilse:"lost (gone astray)", tappat:"lost, dropped", "plånbok":"wallet",
+};
+
+const SOUNDS = [
+  { l: "å", d: "Like the <b>o</b> in English <i>more</i>, without the r.", ex: [["två","two"],["åtta","eight"],["skål","cheers"]] },
+  { l: "ä", d: "Like the <b>e</b> in <i>bed</i>. Before r it opens up, like <i>air</i>.", ex: [["vänster","left"],["träffas","meet"],["är","is"]] },
+  { l: "ö", d: "Like the <b>u</b> in <i>fur</i>, with rounded lips and no r.", ex: [["höger","right"],["öl","beer"],["söndag","Sunday"]] },
+  { l: "y", d: "Say <b>ee</b> while rounding your lips tightly. English has no exact match.", ex: [["fyra","four"],["mycket","much"]] },
+  { l: "u", d: "A tight, forward <b>oo</b>, close to the French <i>u</i>.", ex: [["du","you"],["hus","house"]] },
+  { l: "sj", d: "The famous breathy sound, like <b>hw</b> blown softly. Also spelled skj, stj and sk before soft vowels.", ex: [["sju","seven"],["sjö","lake"]] },
+  { l: "k", d: "Before e, i, y, ä, ö it softens to a <b>sh</b>-like sound. Elsewhere it is a hard k.", ex: [["kyrka","church"],["köpa","to buy"],["katt","cat"]] },
+  { l: "g", d: "Before e, i, y, ä, ö it becomes a <b>y</b> sound.", ex: [["göra","to do"],["höger","right"]] },
+  { l: "j", d: "Always a <b>y</b> sound, as are hj, dj and lj at the start of a word.", ex: [["ja","yes"],["jag","I"],["hjälp","help"]] },
+  { l: "o", d: "Often a long <b>oo</b>, which surprises English speakers.", ex: [["god","good"],["bor","live"]] },
+];
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const el = (tag, props = {}, ...kids) => { const n = Object.assign(document.createElement(tag), props); n.append(...kids); return n; };
+const norm = s => s.toLowerCase().replace(/[.,!?¡¿;:"“”…()]/g, "").replace(/\s+/g, " ").trim();
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+
+const ALL = [];
+CATS.forEach(c => c.items.forEach(([sv, en, say], i) => ALL.push({ id: c.id + i, cat: c.id, sv, en, say })));
+const BY_SV = new Map(ALL.map(p => [norm(p.sv), p]));
+const BY_EN = new Map();
+ALL.forEach(p => p.en.split(" / ").forEach(e => BY_EN.set(norm(e), p)));
+
+/* ---------- speech ---------- */
+let svVoice = null;
+const canSpeak = "speechSynthesis" in window;
+function loadVoices() {
+  if (!canSpeak) return;
+  const vs = speechSynthesis.getVoices();
+  svVoice = vs.find(v => /^sv[-_]?SE/i.test(v.lang)) || vs.find(v => /^sv/i.test(v.lang)) || null;
+  updateVoiceNote(vs.length > 0);
+}
+function updateVoiceNote(loaded) {
+  const n = $("#voice-note");
+  if (!canSpeak) { n.hidden = false; n.innerHTML = "<b>Audio unavailable.</b> This browser can't speak text aloud. Try Chrome, Edge or Safari."; return; }
+  if (loaded && !svVoice) {
+    n.hidden = false;
+    n.innerHTML = "Every phrase and word in the phrasebook has built-in Swedish audio. <b>New sentences from the translator</b> use your device's own voice, and this device has no Swedish voice, so those are read word by word instead. For smooth sentences, add Swedish under Settings › Time & language › Speech on Windows, or Accessibility › Spoken Content on iPhone and Mac.";
+  } else n.hidden = true;
+}
+if (canSpeak) { loadVoices(); speechSynthesis.addEventListener?.("voiceschanged", loadVoices); setTimeout(loadVoices, 800); }
+
+// Recorded Swedish clips (Piper, sv_SE NST voice), keyed by norm(text)
+let CLIPS = {};
+fetch("audio.json").then(r => r.ok ? r.json() : {}).then(j => { CLIPS = j; }).catch(() => {});
+let player = null, speakRun = 0;
+function playClip(key, slow) {
+  return new Promise(done => {
+    const a = new Audio("data:audio/mpeg;base64," + CLIPS[key]);
+    a.defaultPlaybackRate = a.playbackRate = slow ? 0.7 : 1;
+    a.preservesPitch = true;
+    a.onended = a.onerror = done;
+    player = a;
+    a.play().catch(done);
+  });
+}
+
+async function speak(text, slow) {
+  const run = ++speakRun;
+  player?.pause();
+  if (canSpeak) speechSynthesis.cancel();
+  const key = norm(text.replace(/…/g, ""));
+  if (CLIPS[key]) return playClip(key, slow);
+  const parts = key.split(" ");
+  if ((!svVoice || !canSpeak) && parts.length > 1 && parts.every(p => CLIPS[p])) {
+    for (const p of parts) { if (run !== speakRun) return; await playClip(p, slow); }
+    return;
+  }
+  if (!canSpeak) return;
+  const u = new SpeechSynthesisUtterance(text.replace(/…/g, ""));
+  u.lang = "sv-SE";
+  if (svVoice) u.voice = svVoice;
+  u.rate = slow ? 0.55 : 0.9;
+  speechSynthesis.speak(u);
+}
+const ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+function speakers(text) {
+  const wrap = el("span", { className: "spk" });
+  const a = el("button", { type: "button", innerHTML: ICON, title: "Listen" });
+  a.setAttribute("aria-label", "Listen to " + text);
+  a.onclick = e => { e.stopPropagation(); speak(text, false); };
+  const b = el("button", { type: "button", className: "slow", textContent: "slow", title: "Listen slowly" });
+  b.setAttribute("aria-label", "Listen slowly to " + text);
+  b.onclick = e => { e.stopPropagation(); speak(text, true); };
+  wrap.append(a, b);
+  return wrap;
+}
+
+/* ---------- Claude (ask) ---------- */
+let samplePromise = window.claude?.use ? window.claude.use("sample").catch(() => null) : Promise.resolve(null);
+let sampleBlocked = false;
+
+async function askClaude(text, dir) {
+  const sample = await samplePromise;
+  if (!sample || sampleBlocked) return { unavailable: true };
+  const from = dir === "sv" ? "Swedish" : "English", to = dir === "sv" ? "English" : "Swedish";
+  const prompt =
+`You are a friendly Swedish tutor for English speakers. Translate the ${from} text below into ${to}.
+If the text is clearly in the other language, translate it the other way and set "flipped": true.
+Reply with only a JSON object of this shape:
+{"translation": string, "swedish": string (the Swedish side, correctly spelled), "pronunciation": string (simple English-style respelling of the Swedish, stressed syllable in CAPS, e.g. "hoor mohr doo"), "words": [{"word": string (Swedish word), "meaning": string (short English gloss)}], "note": string (one short sentence on usage, grammar or a cultural tip; empty if nothing useful), "flipped": boolean}
+List "words" for every Swedish word in order (max 15).
+
+Text: ${text.slice(0, 600)}`;
+  try {
+    return await sample.json(prompt, { modelTier: "quick" });
+  } catch (e) {
+    if (["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(e.code)) { sampleBlocked = true; return { unavailable: true }; }
+    return { error: e.code === "rate_limited" ? "Too many requests just now. Wait a minute and try again." : "The translation didn't come through. Try again." };
+  }
+}
+
+/* ---------- translator ---------- */
+let dir = "sv";
+const EXAMPLES = { sv: ["smörgås", "Var är toaletten?", "Jag lär mig svenska", "fönster"], en: ["Thank you very much", "Where is the station?", "I like coffee", "good night"] };
+function setDir(d) {
+  dir = d;
+  $("#dir-sv").setAttribute("aria-pressed", d === "sv");
+  $("#dir-en").setAttribute("aria-pressed", d === "en");
+  $("#ask-input").placeholder = d === "sv" ? "Type a Swedish word or sentence, e.g. smörgås" : "Type English, e.g. Where is the station?";
+  const ex = $("#examples"); ex.replaceChildren(el("span", { textContent: "Try:" }));
+  EXAMPLES[d].forEach(t => ex.append(el("button", { type: "button", textContent: t, onclick: () => { $("#ask-input").value = t; translate(); } })));
+}
+$("#dir-sv").onclick = () => setDir("sv");
+$("#dir-en").onclick = () => setDir("en");
+
+function renderResult({ source, translation, swedish, pronunciation, words, note, error }) {
+  const r = $("#result"); r.replaceChildren();
+  if (error) { r.append(el("p", { className: "err", textContent: error })); return; }
+  r.append(el("div", { className: "src", textContent: source }));
+  const main = el("div", { className: "main" }, el("span", { className: "tr", textContent: translation }));
+  if (swedish) main.append(speakers(swedish));
+  r.append(main);
+  if (pronunciation) r.append(el("div", { className: "say", textContent: (swedish && swedish !== translation ? swedish + "  ·  " : "") + "/" + pronunciation + "/" }));
+  if (words && words.length > 1) {
+    const b = el("div", { className: "breakdown" });
+    words.forEach(w => b.append(el("span", {}, el("b", { textContent: w.word }), " = " + w.meaning)));
+    r.append(b);
+  }
+  if (note) r.append(el("p", { className: "note", textContent: note }));
+}
+
+function localLookup(text) {
+  const n = norm(text);
+  if (dir === "sv") {
+    const p = BY_SV.get(n);
+    if (p) return { source: "From the phrasebook", translation: p.en, swedish: p.sv, pronunciation: p.say, words: wordsOf(p.sv) };
+    if (WORDS[n]) return { source: "From the phrasebook", translation: WORDS[n], swedish: text.trim() };
+  } else {
+    const p = BY_EN.get(n);
+    if (p) return { source: "From the phrasebook", translation: p.sv, swedish: p.sv, pronunciation: p.say, words: wordsOf(p.sv) };
+  }
+  return null;
+}
+function wordsOf(sv) { return norm(sv).split(" ").map(w => ({ word: w, meaning: WORDS[w] || "?" })); }
+
+async function translate() {
+  const text = $("#ask-input").value.trim();
+  if (!text) return;
+  const local = localLookup(text);
+  if (local) { renderResult(local); return; }
+  const btn = $("#ask-btn"); btn.disabled = true;
+  $("#result").replaceChildren(el("p", { className: "hint", textContent: "Asking Claude…" }));
+  const ans = await askClaude(text, dir);
+  btn.disabled = false;
+  if (ans.unavailable) {
+    if (dir === "sv") {
+      const ws = wordsOf(text), known = ws.filter(w => w.meaning !== "?").length;
+      if (known) { renderResult({ source: "Word by word from the phrasebook (approximate)", translation: ws.map(w => w.meaning === "?" ? w.word : w.meaning.split(/[,;(]/)[0].trim()).join(" "), swedish: text, words: ws, note: "This is a word-by-word guess from the phrasebook. Full sentence translation is only in the Claude version of Lagom Phrasebook." }); return; }
+    }
+    renderResult({ error: "That isn't in the phrasebook yet. Try a single word, or one of the phrases below." });
+    return;
+  }
+  if (ans.error) { renderResult(ans); return; }
+  renderResult({
+    source: ans.flipped ? "Translated by Claude (detected the other language)" : "Translated by Claude",
+    translation: String(ans.translation || ""),
+    swedish: String(ans.swedish || (dir === "sv" ? text : ans.translation || "")),
+    pronunciation: ans.pronunciation ? String(ans.pronunciation) : "",
+    words: Array.isArray(ans.words) ? ans.words.map(w => ({ word: String(w.word), meaning: String(w.meaning) })) : [],
+    note: ans.note ? String(ans.note) : "",
+  });
+}
+$("#ask-form").addEventListener("submit", e => { e.preventDefault(); translate(); });
+
+/* ---------- word bar ---------- */
+function showWord(raw) {
+  const w = norm(raw);
+  if (!w) return;
+  $("#wb-sv").textContent = raw;
+  const en = $("#wb-en");
+  if (WORDS[w]) en.textContent = WORDS[w];
+  else {
+    en.replaceChildren(el("button", { className: "askc", type: "button", textContent: "Ask Claude what it means", onclick: () => {
+      setDir("sv"); $("#ask-input").value = raw; translate(); window.scrollTo({ top: 0, behavior: "smooth" });
+    }}));
+  }
+  $("#wb-spk").replaceWith(Object.assign(speakers(raw), { id: "wb-spk" }));
+  $("#wordbar").hidden = false;
+  speak(raw, false);
+}
+$("#wb-close").onclick = () => { $("#wordbar").hidden = true; };
+
+function tokenized(sv) {
+  const f = document.createDocumentFragment();
+  sv.split(/(\s+|[.,!?…])/).forEach(t => {
+    if (!t) return;
+    if (/^[\s.,!?…]+$/.test(t)) f.append(t);
+    else {
+      const s = el("span", { className: "w", textContent: t, tabIndex: 0 });
+      s.setAttribute("role", "button");
+      s.onclick = () => showWord(t);
+      s.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); showWord(t); } };
+      f.append(s);
+    }
+  });
+  return f;
+}
+
+/* ---------- phrases ---------- */
+let cat = store.get("lp-cat", "greet");
+let known = new Set(store.get("lp-known", []));
+function renderCats() {
+  const c = $("#cats"); c.replaceChildren();
+  [{ id: "all", name: "All", items: ALL }, ...CATS].forEach(k => {
+    const b = el("button", { type: "button" }, k.name, el("small", { textContent: k.items.length }));
+    b.setAttribute("aria-pressed", cat === k.id);
+    b.onclick = () => { cat = k.id; store.set("lp-cat", cat); renderCats(); renderGrid(); };
+    c.append(b);
+  });
+}
+function renderGrid() {
+  const q = norm($("#filter").value);
+  const list = ALL.filter(p => (cat === "all" || p.cat === cat) && (!q || norm(p.sv).includes(q) || norm(p.en).includes(q)));
+  const g = $("#grid"); g.replaceChildren();
+  if (!list.length) { g.append(el("p", { className: "empty", textContent: "No phrases match. Try the translator above instead." })); return; }
+  list.forEach(p => {
+    const card = el("article", { className: "card" },
+      el("div", { className: "sv" }, tokenized(p.sv)),
+      speakers(p.sv),
+      el("div", { className: "en", textContent: p.en }),
+      el("div", { className: "say", textContent: "/" + p.say + "/" }));
+    if (known.has(p.id)) card.append(el("div", { className: "known", textContent: "✓ Learned" }));
+    g.append(card);
+  });
+}
+$("#filter").addEventListener("input", renderGrid);
+
+/* ---------- practice ---------- */
+let deck = [], cur = null, revealed = false;
+const deckSel = $("#deck-sel");
+[{ id: "all", name: "All phrases" }, ...CATS].forEach(k => deckSel.append(el("option", { value: k.id, textContent: k.name })));
+deckSel.value = store.get("lp-deck", "greet");
+deckSel.onchange = () => { store.set("lp-deck", deckSel.value); buildDeck(); };
+$("#reset-known").onclick = () => { known.clear(); store.set("lp-known", []); buildDeck(); renderGrid(); };
+
+function buildDeck() {
+  const pool = ALL.filter(p => deckSel.value === "all" || p.cat === deckSel.value);
+  deck = pool.filter(p => !known.has(p.id)).sort(() => Math.random() - 0.5);
+  const done = pool.length - deck.length;
+  $("#prog-label").textContent = `${done} of ${pool.length} learned in this deck`;
+  $("#prog-bar").style.width = (pool.length ? done / pool.length * 100 : 0) + "%";
+  next();
+}
+function next() {
+  cur = deck.shift() || null; revealed = false; renderFlash();
+}
+function renderFlash() {
+  const f = $("#flash"); f.replaceChildren();
+  if (!cur) {
+    f.append(el("div", { className: "sv", textContent: "Bra jobbat!" }),
+      el("div", { className: "en", textContent: "Great job! You've learned every phrase in this deck." }),
+      el("div", { className: "row" }, el("button", { className: "btn ghost", type: "button", textContent: "Practise this deck again", onclick: () => {
+        ALL.filter(p => deckSel.value === "all" || p.cat === deckSel.value).forEach(p => known.delete(p.id));
+        store.set("lp-known", [...known]); buildDeck(); renderGrid();
+      }})));
+    return;
+  }
+  f.append(el("div", { className: "meta", textContent: "What does this mean?" }),
+    el("div", { className: "sv", textContent: cur.sv }), speakers(cur.sv));
+  if (!revealed) {
+    f.append(el("div", { className: "row" }, el("button", { className: "btn", type: "button", textContent: "Show answer", onclick: () => { revealed = true; renderFlash(); } })));
+  } else {
+    f.append(el("div", { className: "back" }, el("div", { className: "en", textContent: cur.en }), el("div", { className: "say", textContent: "/" + cur.say + "/" })),
+      el("div", { className: "row" },
+        el("button", { className: "btn ghost", type: "button", textContent: "Practise again later", onclick: () => { deck.push(cur); next(); } }),
+        el("button", { className: "btn good", type: "button", textContent: "I knew it", onclick: () => {
+          known.add(cur.id); store.set("lp-known", [...known]); renderGrid();
+          const pool = ALL.filter(p => deckSel.value === "all" || p.cat === deckSel.value);
+          const done = pool.filter(p => known.has(p.id)).length;
+          $("#prog-label").textContent = `${done} of ${pool.length} learned in this deck`;
+          $("#prog-bar").style.width = done / pool.length * 100 + "%";
+          next();
+        }})));
+  }
+}
+
+/* ---------- sounds ---------- */
+SOUNDS.forEach(s => {
+  const ex = el("div", { className: "ex" });
+  s.ex.forEach(([w, m]) => ex.append(el("button", { type: "button", onclick: () => speak(w, true) }, w, el("em", { textContent: m }))));
+  $("#sounds").append(el("div", { className: "sound" }, el("div", { className: "letter", textContent: s.l }), el("p", { innerHTML: s.d }), ex));
+});
+
+/* ---------- tabs ---------- */
+const TABS = ["phrases", "practice", "sounds"];
+function showTab(t) {
+  TABS.forEach(x => { $("#tab-" + x).setAttribute("aria-selected", x === t); $("#p-" + x).hidden = x !== t; });
+  store.set("lp-tab", t);
+}
+TABS.forEach(t => $("#tab-" + t).onclick = () => showTab(t));
+
+/* ---------- boot ---------- */
+setDir("sv");
+renderCats(); renderGrid(); buildDeck();
+const hashTab = location.hash.slice(1);
+showTab(TABS.includes(hashTab) ? hashTab : store.get("lp-tab", "phrases"));
+renderResult(localLookup("Hur mår du?"));
+</script>
+
+<script>
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+(() => {
+  const box = document.getElementById("install"), txt = document.getElementById("install-text"), btn = document.getElementById("install-btn");
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  let dismissed = false; try { dismissed = localStorage.getItem("lp-install-x") === "1"; } catch {}
+  if (standalone || dismissed) return;
+  document.getElementById("install-x").onclick = () => { box.hidden = true; try { localStorage.setItem("lp-install-x", "1"); } catch {} };
+  let deferred = null;
+  addEventListener("beforeinstallprompt", e => {
+    e.preventDefault(); deferred = e;
+    txt.textContent = "Install Lagom Phrasebook on this device to use it offline, like an app.";
+    btn.hidden = false; box.hidden = false;
+  });
+  btn.onclick = async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; box.hidden = true; };
+  if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+    txt.innerHTML = "Install this app: tap <b>Share</b>, then <b>Add to Home Screen</b>.";
+    box.hidden = false;
+  }
+})();
+</script>
+</body>
+</html>
